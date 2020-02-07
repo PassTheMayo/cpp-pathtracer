@@ -8,9 +8,9 @@ Renderer::Renderer(int width, int height)
     this->height = height;
 }
 
-Color Renderer::traceRay(Ray ray, Scene scene, Camera camera)
+Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera)
 {
-    Intersection intersect = scene.castRay(ray);
+    Intersection intersect = scene->castRay(ray);
 
     if (!intersect.hit)
     {

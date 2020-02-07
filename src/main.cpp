@@ -12,16 +12,16 @@
 
 void setupScene(Scene *scene)
 {
-    Object sphere1 = Sphere(Vector3(0.0, 0.0, 15.0), 5, Material(0, 1, 0, Color(255.0, 255.0, 255.0)));
+    Sphere sphere1 = Sphere(Vector3(0.0, 0.0, 15.0), 5, Material(0, 1, 0, Color(255.0, 255.0, 255.0)));
 
-    scene->addObject(&sphere1);
+    scene->addObject(std::make_unique<Sphere>(sphere1));
 }
 
 int main()
 {
     Scene scene;
-    Camera camera = Camera(Vector3(0.0, 0.0, 0.0), Rotation(M_PI, 0.0, 0.0), 60.0);
-    Renderer renderer = Renderer(1920 / 4, 1080 / 4);
+    Camera camera(Vector3(0.0, 0.0, 0.0), Rotation(M_PI, 0.0, 0.0), 60.0);
+    Renderer renderer(1920 / 4, 1080 / 4);
 
     setupScene(&scene);
 
@@ -35,7 +35,7 @@ int main()
         {
             Ray ray = camera.getRay(double(x) / double(renderer.width), double(y) / double(renderer.height), aspectRatio);
 
-            Color color = renderer.traceRay(ray, scene, camera);
+            Color color = renderer.traceRay(&ray, &scene, &camera);
 
             image.set_pixel(x, y, png::rgba_pixel(color.r, color.g, color.b, 255));
         }

@@ -2,7 +2,7 @@
 
 Object::Object() {}
 
-double Object::calculateIntersection(Ray ray)
+double Object::calculateIntersection(Ray *ray)
 {
     return -1;
 }

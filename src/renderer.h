@@ -12,5 +12,5 @@ public:
     int height;
 
     Renderer(int width, int height);
-    Color traceRay(Ray ray, Scene scene, Camera camera);
+    Color traceRay(Ray *ray, Scene *scene, Camera *camera);
 };

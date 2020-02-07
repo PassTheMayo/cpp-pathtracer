@@ -8,9 +8,10 @@
 class Scene
 {
 public:
-    std::vector<Object *> objects;
+    std::vector<std::unique_ptr<Object>> objects;
 
     Scene();
-    void addObject(Object *object);
-    Intersection castRay(Ray ray);
+    Scene(const Scene &) = delete;
+    void addObject(std::unique_ptr<Object> object);
+    Intersection castRay(Ray *ray);
 };

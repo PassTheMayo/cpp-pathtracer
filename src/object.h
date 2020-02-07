@@ -7,7 +7,7 @@ class Object
 {
 public:
     Object();
-    double calculateIntersection(Ray ray);
+    double calculateIntersection(Ray *ray);
     Vector3 calculateNormal(Vector3 collisionPoint);
     Material getMaterial();
 };
