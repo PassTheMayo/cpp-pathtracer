@@ -57,7 +57,7 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, 
     }
 }
 
-const double threadCount = 16.0;
+const double threadCount = 2.0;
 
 int main()
 {
@@ -65,7 +65,7 @@ int main()
 
     Scene scene;
     Camera camera(Vector3(0.0, 2.5, 15.0), Rotation(M_PI, 0.0, 0.0), 180.0, 4);
-    Renderer renderer(1920, 1080, 10);
+    Renderer renderer(1920.0, 1080.0, 500);
     Skybox skybox(Color(63.0, 178.0, 232.0), Color(225.0, 244.0, 252.0), Color(225.0, 244.0, 252.0), 1.0);
 
     scene.setSkybox(&skybox);
@@ -83,9 +83,7 @@ int main()
     {
         int width = double(renderer.width) / threadCount;
 
-        std::thread renderThread(renderRegion, i * width, 0, i * width + width, renderer.height, &camera, &scene, &renderer, &image);
-
-        threads.emplace_back(renderThread);
+        threads.emplace_back(renderRegion, i * width, 0, i * width + width, renderer.height, &camera, &scene, &renderer, &image);
     }
 
     for (int i = 0; i < threadCount; i++)
