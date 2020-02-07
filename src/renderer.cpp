@@ -2,6 +2,7 @@
 #include "material.h"
 #include "ray.h"
 #include "renderer.h"
+#include "util.h"
 
 Renderer::Renderer(int width, int height, int samples)
 {
@@ -40,11 +41,7 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
 
     Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
-    double randomX = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    double randomY = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    double randomZ = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-
-    Vector3 reflectDirection = ray->direction.subtract(normal.multiply(ray->direction.dot(normal) * 2)).normalize().interpolate(Vector3(randomX * 2 - 1, randomY * 2 - 1, randomZ * 2 - 1), material.diffuse).normalize();
+    Vector3 reflectDirection = ray->direction.subtract(normal.multiply(ray->direction.dot(normal) * 2)).normalize().interpolate(Vector3(randomDouble() * 2 - 1, randomDouble() * 2 - 1, randomDouble() * 2 - 1), material.diffuse).normalize();
 
     if (normal.dot(reflectDirection) < 0)
     {
