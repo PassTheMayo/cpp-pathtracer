@@ -18,11 +18,6 @@ Intersection Scene::castRay(Ray *ray)
     {
         double dist = objects[i].get()->calculateIntersection(ray);
 
-        if (dist > -1)
-        {
-            printf("Hit sphere\n");
-        }
-
         if (dist >= 0 && (dist < closestDistance || closestDistance < 0))
         {
             closestDistance = dist;

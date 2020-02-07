@@ -4,6 +4,13 @@
 
 const double EPSILON = 0.00001;
 
+Sphere::Sphere()
+{
+    this->position = Vector3();
+    this->radius = 0;
+    this->material = Material();
+}
+
 Sphere::Sphere(Vector3 position, double radius, Material material)
 {
     this->position = position;
@@ -17,8 +24,6 @@ double Sphere::calculateIntersection(Ray *ray)
     double midpointDistance = directionToCenter.dot(ray->direction);
     double midpointToCenter = directionToCenter.dot(directionToCenter);
     double discriminant = (radius * radius) - midpointToCenter + (midpointDistance * midpointDistance);
-
-    printf("%.2f\n", discriminant);
 
     if (discriminant < 0)
     {
@@ -36,4 +41,14 @@ double Sphere::calculateIntersection(Ray *ray)
     }
 
     return -1;
+}
+
+Vector3 Sphere::calculateNormal(Vector3 intersectionPoint)
+{
+    return intersectionPoint.subtract(position);
+}
+
+Material Sphere::getMaterial()
+{
+    return material;
 }

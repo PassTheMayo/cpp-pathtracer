@@ -17,8 +17,6 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera)
         return Color(0.0, 0.0, 0.0);
     }
 
-    std::cout << "Hit object" << std::endl;
-
     Material material = intersect.object->getMaterial();
 
     return material.color;
