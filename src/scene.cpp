@@ -4,6 +4,11 @@
 
 Scene::Scene() {}
 
+void Scene::setSkybox(Skybox *skybox)
+{
+    this->skybox = skybox;
+}
+
 void Scene::addObject(std::unique_ptr<Object> object)
 {
     objects.emplace_back(std::move(object));

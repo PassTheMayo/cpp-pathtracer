@@ -31,6 +31,7 @@ public:
     Color divide(float r, float g, float b);
     Color divide(double r, double g, double b);
     Color clamp();
+    Color interpolate(Color c2, double scalar);
     Color operator+(Color color);
     Color operator+(float value);
     Color operator+(double value);

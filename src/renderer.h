@@ -10,7 +10,8 @@ class Renderer
 public:
     int width;
     int height;
+    int samples;
 
-    Renderer(int width, int height);
-    Color traceRay(Ray *ray, Scene *scene, Camera *camera);
+    Renderer(int width, int height, int samples);
+    Color traceRay(Ray *ray, Scene *scene, Camera *camera, int depth);
 };

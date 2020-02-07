@@ -128,6 +128,11 @@ Color Color::clamp()
     return Color(std::max(std::min(r, 255.0), 0.0), std::max(std::min(g, 255.0), 0.0), std::max(std::min(b, 255.0), 0.0));
 }
 
+Color Color::interpolate(Color c2, double scalar)
+{
+    return Color(r + (c2.r - r) * scalar, g + (c2.g - g) * scalar, b + (c2.b - b) * scalar);
+}
+
 Color Color::operator+(Color color)
 {
     return add(color);

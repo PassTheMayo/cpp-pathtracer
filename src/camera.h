@@ -10,7 +10,8 @@ public:
     Vector3 position;
     Rotation rotation;
     double fov;
+    int maxBounces;
 
-    Camera(Vector3 position, Rotation rotation, double fov);
+    Camera(Vector3 position, Rotation rotation, double fov, int maxBounces);
     Ray getRay(double x, double y, double aspectRatio);
 };

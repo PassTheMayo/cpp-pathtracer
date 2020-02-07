@@ -1,11 +1,12 @@
 #include <iostream>
 #include "camera.h"
 
-Camera::Camera(Vector3 position, Rotation rotation, double fov)
+Camera::Camera(Vector3 position, Rotation rotation, double fov, int maxBounces)
 {
     this->position = position;
     this->rotation = rotation;
     this->fov = fov;
+    this->maxBounces = maxBounces;
 }
 
 Ray Camera::getRay(double x, double y, double aspectRatio)
