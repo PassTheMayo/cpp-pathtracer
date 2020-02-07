@@ -8,6 +8,7 @@
 #include "renderer.h"
 #include "sphere.h"
 #include "triangle.h"
+#include "plane.h"
 #include "ray.h"
 #include "rotation.h"
 #include "color.h"
@@ -16,30 +17,21 @@
 #include "skybox.h"
 #include "util.h"
 
-const double antialiasJitter = 1.0;
+const double antialiasJitter = 0.0;
 const int sampleCount = 10;
 const int maxBounces = 2;
 const double threadCount = 2.0;
 
 void setupScene(Scene *scene)
 {
-    Sphere sphere1 = Sphere(Vector3(0.0, 1.0, 0.0), 1, Material(0.65, 0.25, 0, Color(255.0, 50.0, 50.0)));
+    Sphere sphere1 = Sphere(Vector3(0.0, 1.25, 0.0), 1.25, Material(1.0, 0.2, 0.0, Color(255.0, 50.0, 50.0)));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
-    Sphere sphere2 = Sphere(Vector3(-2.0, 1.0, 0.0), 1, Material(1.0, 0.0, 0, Color(255.0, 255.0, 255.0)));
-    scene->addObject(std::make_unique<Sphere>(sphere2));
-
-    Sphere sphere3 = Sphere(Vector3(2.0, 1.0, 0.0), 1, Material(0.85, 0.5, 0, Color(50.0, 255.0, 50.0)));
-    scene->addObject(std::make_unique<Sphere>(sphere3));
-
-    Sphere light = Sphere(Vector3(0.0, 7.0, 0.0), 2, Material(0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0)));
+    Sphere light = Sphere(Vector3(0.0, 10.0, 0.0), 5, Material(0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0)));
     scene->addObject(std::make_unique<Sphere>(light));
 
-    Triangle floor1 = Triangle(Vector3(25.0, 0.0, 25.0), Vector3(25.0, 0.0, -25.0), Vector3(-25.0, 0.0, -25.0), Material(0.75, 0.5, 0.0, Color(0.0, 0.0, 0.0)));
-    scene->addObject(std::make_unique<Triangle>(floor1));
-
-    Triangle floor2 = Triangle(Vector3(-25.0, 0.0, -25.0), Vector3(-25.0, 0.0, 25.0), Vector3(25.0, 0.0, 25.0), Material(0.75, 0.5, 0.0, Color(0.0, 0.0, 0.0)));
-    scene->addObject(std::make_unique<Triangle>(floor2));
+    Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), Material(0.9, 0.5, 0.0, Color(0.0, 0.0, 0.0)));
+    scene->addObject(std::make_unique<Plane>(floor));
 }
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, Renderer *renderer, png::image<png::rgba_pixel> *image)
@@ -69,7 +61,7 @@ int main()
     srand(time(NULL));
 
     Scene scene;
-    Renderer renderer(1920.0 * 2.0, 1080.0 * 2.0, sampleCount);
+    Renderer renderer(1920.0 * 0.5, 1080.0 * 0.5, sampleCount);
     Camera camera(Vector3(0.0, 1.5, 10.0), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
     Skybox skybox(Color(63.0, 178.0, 232.0), Color(225.0, 244.0, 252.0), Color(225.0, 244.0, 252.0), 1.0);
 
