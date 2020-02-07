@@ -40,6 +40,12 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
     double randomZ = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 
     Vector3 reflectDirection = ray->direction.subtract(normal.multiply(ray->direction.dot(normal) * 2)).normalize().interpolate(Vector3(randomX * 2 - 1, randomY * 2 - 1, randomZ * 2 - 1), material.diffuse).normalize();
+
+    if (normal.dot(reflectDirection) < 0)
+    {
+        reflectDirection = reflectDirection * -1.0;
+    }
+
     Ray reflectRay = Ray(intersect.collisionPoint + reflectDirection * 0.01, reflectDirection);
 
     Color reflectColor = traceRay(&reflectRay, scene, camera, depth);

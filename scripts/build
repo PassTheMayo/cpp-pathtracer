@@ -1,3 +1,3 @@
 #!/bin/bash
 mkdir -p bin/
-g++ -o bin/main src/*.cpp -lpng -lpthread
+g++ -o bin/main src/*.cpp -lpng -lpthread -O3
