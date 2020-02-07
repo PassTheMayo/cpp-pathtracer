@@ -33,6 +33,11 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
 
     Material material = intersect.object->getMaterial();
 
+    if (material.emittance == 1)
+    {
+        return material.color;
+    }
+
     Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
     double randomX = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
