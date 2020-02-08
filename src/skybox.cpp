@@ -28,5 +28,5 @@ Color Skybox::getColor(Vector3 rayDirection)
         return sideColor.interpolate(bottomColor, abs(dot)) * intensity;
     }
 
-    return sideColor.interpolate(topColor, dot);
+    return sideColor.interpolate(topColor, dot) * intensity;
 }

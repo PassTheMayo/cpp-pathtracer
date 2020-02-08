@@ -51,5 +51,19 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
 
     Color reflectColor = traceRay(&reflectRay, scene, camera, depth);
 
-    return material.color.multiply(reflectColor.magnitude()).interpolate(reflectColor, material.reflectivity);
+    Color refractColor;
+
+    if (material.transmission > 0.0)
+    {
+        Vector3 refractDirection;
+
+        if (ray->refract(normal, material.ior, &refractDirection))
+        {
+            Ray refractRay = Ray(intersect.collisionPoint + refractDirection * 0.01, refractDirection);
+
+            refractColor = traceRay(&refractRay, scene, camera, depth);
+        }
+    }
+
+    return material.color.multiply(reflectColor.magnitude()).interpolate(reflectColor, material.reflectivity).interpolate(refractColor, material.transmission);
 }
