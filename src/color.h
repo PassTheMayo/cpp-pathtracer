@@ -1,5 +1,7 @@
 #pragma once
 
+#include <png++/png.hpp>
+
 class Color
 {
 public:
@@ -8,6 +10,7 @@ public:
     double b;
 
     Color();
+    Color(png::rgb_pixel pixel);
     Color(float r, float g, float b);
     Color(double r, double g, double b);
     Color add(Color color);
@@ -32,6 +35,7 @@ public:
     Color divide(double r, double g, double b);
     Color clamp();
     Color interpolate(Color c2, double scalar);
+    double magnitude();
     Color operator+(Color color);
     Color operator+(float value);
     Color operator+(double value);

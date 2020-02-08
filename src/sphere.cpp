@@ -52,3 +52,8 @@ Material Sphere::getMaterial()
 {
     return material;
 }
+
+Vector3 Sphere::calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal)
+{
+    return Vector3(atan2(normal.x, normal.z) / (2 * M_PI) + 0.5, normal.y * 0.5 + 0.5, 0.0);
+}

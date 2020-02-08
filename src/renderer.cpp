@@ -33,13 +33,12 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
     }
 
     Material material = intersect.object->getMaterial();
+    Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
     if (material.emittance == 1)
     {
         return material.color;
     }
-
-    Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
     Vector3 reflectDirection = ray->direction.subtract(normal.multiply(ray->direction.dot(normal) * 2)).normalize().interpolate(Vector3(randomDouble() * 2 - 1, randomDouble() * 2 - 1, randomDouble() * 2 - 1), material.diffuse).normalize();
 
@@ -52,5 +51,5 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
 
     Color reflectColor = traceRay(&reflectRay, scene, camera, depth);
 
-    return material.color.interpolate(reflectColor, material.reflectivity);
+    return material.color.multiply(reflectColor.magnitude()).interpolate(reflectColor, material.reflectivity);
 }

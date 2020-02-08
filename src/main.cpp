@@ -17,9 +17,9 @@
 #include "skybox.h"
 #include "util.h"
 
-const double antialiasJitter = 0.0;
-const int sampleCount = 20000;
-const int maxBounces = 2;
+const double antialiasJitter = 1.0;
+const int sampleCount = 1000;
+const int maxBounces = 10;
 const double threadCount = 16.0;
 
 void setupScene(Scene *scene)
@@ -27,13 +27,13 @@ void setupScene(Scene *scene)
     Sphere sphere1 = Sphere(Vector3(-2.5, 1.25, 0.0), 1.25, Material(1.0, 0.0, 0.0, Color(255.0, 50.0, 50.0)));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
-    Sphere sphere2 = Sphere(Vector3(0.0, 1.25, 0.0), 1.25, Material(1.0, 0.2, 0.0, Color(255.0, 50.0, 50.0)));
+    Sphere sphere2 = Sphere(Vector3(0.0, 1.25, 0.0), 1.25, Material(0.0, 1.0, 0.0, Color(255.0, 50.0, 50.0)));
     scene->addObject(std::make_unique<Sphere>(sphere2));
 
     Sphere sphere3 = Sphere(Vector3(2.5, 1.25, 0.0), 1.25, Material(1.0, 0.4, 0.0, Color(255.0, 50.0, 50.0)));
     scene->addObject(std::make_unique<Sphere>(sphere3));
 
-    Sphere light = Sphere(Vector3(0.0, 20.0, 0.0), 10, Material(0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0)));
+    Sphere light = Sphere(Vector3(0.0, 30.0, 0.0), 20, Material(0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0)));
     scene->addObject(std::make_unique<Sphere>(light));
 
     Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), Material(0.9, 0.5, 0.0, Color(0.0, 0.0, 0.0)));
@@ -66,7 +66,7 @@ int main()
 {
     Scene scene;
     Renderer renderer(3840.0, 2160.0, sampleCount);
-    Camera camera(Vector3(0.0, 1.5, 10.0), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
+    Camera camera(Vector3(0.0, 1.5, 13.5), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
     Skybox skybox(Color(63.0, 178.0, 232.0), Color(225.0, 244.0, 252.0), Color(225.0, 244.0, 252.0), 1.0);
 
     // scene.setSkybox(&skybox);

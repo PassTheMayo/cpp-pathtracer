@@ -3,9 +3,9 @@
 
 Plane::Plane()
 {
-    position = Vector3(0.0, 0.0, 0.0);
-    normal = Vector3(0.0, 1.0, 0.0);
-    material = Material(0.0, 0.0, 0.0, Color(0.0, 0.0, 0.0));
+    position = Vector3();
+    normal = Vector3();
+    material = Material();
 }
 
 Plane::Plane(Vector3 position, Vector3 normal, Material material)

@@ -9,6 +9,13 @@ Color::Color()
     b = 0;
 }
 
+Color::Color(png::rgb_pixel pixel)
+{
+    this->r = pixel.red;
+    this->g = pixel.green;
+    this->b = pixel.blue;
+}
+
 Color::Color(float r, float g, float b)
 {
     this->r = r;
@@ -131,6 +138,11 @@ Color Color::clamp()
 Color Color::interpolate(Color c2, double scalar)
 {
     return Color(r + (c2.r - r) * scalar, g + (c2.g - g) * scalar, b + (c2.b - b) * scalar);
+}
+
+double Color::magnitude()
+{
+    return (r + g + b) / (255 * 3);
 }
 
 Color Color::operator+(Color color)

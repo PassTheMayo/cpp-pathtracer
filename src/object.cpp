@@ -4,15 +4,20 @@ Object::Object() {}
 
 double Object::calculateIntersection(Ray *ray)
 {
-    return -1;
+    throw "Object::calculateIntersection() called";
 }
 
 Vector3 Object::calculateNormal(Vector3 collisionPoint)
 {
-    return Vector3(0.0, 1.0, 0.0);
+    throw "Object::calculateNormal() called";
 }
 
 Material Object::getMaterial()
 {
-    return Material(0.0, 0.0, 0.0, Color(0.0, 0.0, 0.0));
+    throw "Object::getMaterial() called";
+}
+
+Vector3 Object::calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal)
+{
+    throw "Object::calculateUVCoordinates() called";
 }
