@@ -2,6 +2,8 @@
 
 Object::Object() {}
 
+Object::~Object() {}
+
 double Object::calculateIntersection(Ray *ray)
 {
     throw "Object::calculateIntersection() called";

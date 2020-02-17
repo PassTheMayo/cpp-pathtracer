@@ -15,6 +15,8 @@ Plane::Plane(Vector3 position, Vector3 normal, Material material)
     this->material = material;
 }
 
+Plane::~Plane() {}
+
 double Plane::calculateIntersection(Ray *ray)
 {
     return normal.dot(ray->origin - position) / -ray->direction.dot(normal);

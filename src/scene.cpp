@@ -19,7 +19,7 @@ Intersection Scene::castRay(Ray *ray)
     Object *object = nullptr;
     double closestDistance = -1;
 
-    for (int i = 0; i < objects.size(); i++)
+    for (int i = 0, l = objects.size(); i < l; i++)
     {
         double dist = objects[i].get()->calculateIntersection(ray);
 

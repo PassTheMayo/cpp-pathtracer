@@ -7,6 +7,7 @@ class Object
 {
 public:
     Object();
+    virtual ~Object();
     virtual double calculateIntersection(Ray *ray);
     virtual Vector3 calculateNormal(Vector3 collisionPoint);
     virtual Material getMaterial();

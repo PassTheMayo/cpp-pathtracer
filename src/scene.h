@@ -9,7 +9,7 @@
 class Scene
 {
 public:
-    Skybox *skybox;
+    Skybox *skybox = nullptr;
     std::vector<std::unique_ptr<Object>> objects;
 
     Scene();

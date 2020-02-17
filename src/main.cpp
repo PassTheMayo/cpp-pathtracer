@@ -17,14 +17,16 @@
 #include "skybox.h"
 #include "util.h"
 
-const double antialiasJitter = 1.0;
-const int sampleCount = 50;
+const int width = 1920;
+const int height = 1080;
+const double antialiasJitter = 0.0;
+const int sampleCount = 10;
 const int maxBounces = 5;
-const double threadCount = 16.0;
+const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
 {
-    Sphere sphere1 = Sphere(Vector3(-2.5, 1.25, 0.0), 1.25, Material(1.0, 0.0, 0.0, 1.0, 1.25, Color(255.0, 50.0, 50.0)));
+    Sphere sphere1 = Sphere(Vector3(-2.5, 1.25, 0.0), 1.25, Material(1.0, 0.0, 0.0, 0.0, 1.25, Color(255.0, 50.0, 50.0)));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
     Sphere sphere2 = Sphere(Vector3(0.0, 1.25, 0.0), 1.25, Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 50.0, 50.0)));
@@ -65,7 +67,7 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, 
 int main()
 {
     Scene scene;
-    Renderer renderer(3840.0, 2160.0, sampleCount);
+    Renderer renderer(width, height, sampleCount);
     Camera camera(Vector3(0.0, 1.5, 13.5), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
 
     setupScene(&scene);
@@ -73,9 +75,10 @@ int main()
     png::image<png::rgba_pixel> image(renderer.width, renderer.height);
 
     int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    int64_t lastUpdate = start;
 
     std::vector<std::thread> threads;
+
+    printf("Render started...\n    - %.0f threads\n    - %d samples\n    - %d max bounces\n    - %dx%d\n", threadCount, sampleCount, maxBounces, renderer.width, renderer.height);
 
     for (int i = 0; i < threadCount; i++)
     {

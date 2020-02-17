@@ -185,6 +185,25 @@ Vector3 Vector3::operator*(double scalar)
     return multiply(scalar);
 }
 
+Vector3 Vector3::operator*(std::array<std::array<double, 3>, 3> matrix3)
+{
+    Vector3 res = Vector3(0.0, 0.0, 0.0);
+
+    res.x += this->x * matrix3[0][0];
+    res.x += this->y * matrix3[0][1];
+    res.x += this->z * matrix3[0][2];
+
+    res.y += this->x * matrix3[1][0];
+    res.y += this->y * matrix3[1][1];
+    res.y += this->z * matrix3[1][2];
+
+    res.z += this->x * matrix3[2][0];
+    res.z += this->y * matrix3[2][1];
+    res.z += this->z * matrix3[2][2];
+
+    return res;
+}
+
 Vector3 Vector3::operator/(Vector3 v2)
 {
     return divide(v2);

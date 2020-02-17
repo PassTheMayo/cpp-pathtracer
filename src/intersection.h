@@ -9,7 +9,7 @@ public:
     bool hit;
     double distance;
     Vector3 collisionPoint;
-    Object *object;
+    Object *object = nullptr;
 
     Intersection(bool hit, double distance, Vector3 collisionPoint, Object *object);
 };

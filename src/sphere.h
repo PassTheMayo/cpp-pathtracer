@@ -12,6 +12,7 @@ public:
 
     Sphere();
     Sphere(Vector3 position, double radius, Material material);
+    ~Sphere();
     double calculateIntersection(Ray *ray);
     Vector3 calculateNormal(Vector3 collisionPoint);
     Material getMaterial();

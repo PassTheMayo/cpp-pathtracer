@@ -13,6 +13,7 @@ public:
 
     Plane();
     Plane(Vector3 position, Vector3 normal, Material material);
+    ~Plane();
     double calculateIntersection(Ray *ray);
     Vector3 calculateNormal(Vector3 collisionPoint);
     Material getMaterial();

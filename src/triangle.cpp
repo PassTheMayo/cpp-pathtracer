@@ -18,6 +18,8 @@ Triangle::Triangle(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Material m
     this->material = material;
 }
 
+Triangle::~Triangle() {}
+
 double Triangle::calculateIntersection(Ray *ray)
 {
     Vector3 edge1 = vertex2 - vertex1;
