@@ -17,29 +17,58 @@
 #include "skybox.h"
 #include "util.h"
 
-const int width = 1920;
-const int height = 1080;
-const double antialiasJitter = 0.0;
-const int sampleCount = 10;
-const int maxBounces = 5;
+const int width = 1000;
+const int height = 1000;
+const double antialiasJitter = 1.0;
+const int sampleCount = 100000;
+const int maxBounces = 100;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
 {
-    Sphere sphere1 = Sphere(Vector3(-2.5, 1.25, 0.0), 1.25, Material(1.0, 0.0, 0.0, 0.0, 1.25, Color(255.0, 50.0, 50.0)));
+    Material leftWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 0.0, 0.0));
+    Material rightWallMaterial = Material(0, 1, 0, 0, 0, Color(0.0, 255.0, 0.0));
+    Material otherWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 255.0, 255.0));
+    Material lightMaterial = Material(0, 0, 1, 0, 0, Color(255.0, 255.0, 255.0));
+
+    Triangle leftWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 0.0, 5.0), Vector3(-5.0, 10.0, 5.0), leftWallMaterial);
+    Triangle leftWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 10.0, -5.0), Vector3(-5.0, 10.0, 5.0), leftWallMaterial);
+    scene->addObject(std::make_unique<Triangle>(leftWall1));
+    scene->addObject(std::make_unique<Triangle>(leftWall2));
+
+    Triangle rightWall1 = Triangle(Vector3(5.0, 0.0, -5.0), Vector3(5.0, 0.0, 5.0), Vector3(5.0, 10.0, 5.0), rightWallMaterial);
+    Triangle rightWall2 = Triangle(Vector3(5.0, 0.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(5.0, 10.0, 5.0), rightWallMaterial);
+    scene->addObject(std::make_unique<Triangle>(rightWall1));
+    scene->addObject(std::make_unique<Triangle>(rightWall2));
+
+    Triangle topWall1 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(5.0, 10.0, 5.0), otherWallMaterial);
+    Triangle topWall2 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(-5.0, 10.0, 5.0), Vector3(5.0, 10.0, 5.0), otherWallMaterial);
+    scene->addObject(std::make_unique<Triangle>(topWall1));
+    scene->addObject(std::make_unique<Triangle>(topWall2));
+
+    Triangle bottomWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), Vector3(5.0, 0.0, 5.0), otherWallMaterial);
+    Triangle bottomWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 0.0, 5.0), Vector3(5.0, 0.0, 5.0), otherWallMaterial);
+    scene->addObject(std::make_unique<Triangle>(bottomWall1));
+    scene->addObject(std::make_unique<Triangle>(bottomWall2));
+
+    Triangle backWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), otherWallMaterial);
+    Triangle backWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), Vector3(5.0, 10.0, -5.0), otherWallMaterial);
+    scene->addObject(std::make_unique<Triangle>(backWall1));
+    scene->addObject(std::make_unique<Triangle>(backWall2));
+
+    Triangle light1 = Triangle(Vector3(-5.0, 9.99, -5.0), Vector3(5.0, 9.99, -5.0), Vector3(5.0, 9.99, 5.0), lightMaterial);
+    Triangle light2 = Triangle(Vector3(-5.0, 9.99, -5.0), Vector3(-5.0, 9.99, 5.0), Vector3(5.0, 9.99, 5.0), lightMaterial);
+    scene->addObject(std::make_unique<Triangle>(light1));
+    scene->addObject(std::make_unique<Triangle>(light2));
+
+    Sphere sphere1 = Sphere(Vector3(-2, 2.5, -2), 2.5, Material(1.0, 0.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 0.0)));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
-    Sphere sphere2 = Sphere(Vector3(0.0, 1.25, 0.0), 1.25, Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 50.0, 50.0)));
-    scene->addObject(std::make_unique<Sphere>(sphere2));
-
-    Sphere sphere3 = Sphere(Vector3(2.5, 1.25, 0.0), 1.25, Material(1.0, 0.4, 0.0, 0.0, 1.0, Color(255.0, 50.0, 50.0)));
+    Sphere sphere3 = Sphere(Vector3(2.25, 1.75, 0.0), 1.75, Material(0.0, 1.0, 0.0, 0.0, 1.45, Color(255.0, 0.0, 0.0)));
     scene->addObject(std::make_unique<Sphere>(sphere3));
 
-    Sphere light = Sphere(Vector3(0.0, 30.0, 0.0), 20, Material(0.0, 0.0, 1.0, 0.0, 1.0, Color(255.0, 255.0, 255.0)));
-    scene->addObject(std::make_unique<Sphere>(light));
-
-    Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), Material(1.0, 0.75, 0.0, 0.0, 1.0, Color(0.0, 0.0, 0.0)));
-    scene->addObject(std::make_unique<Plane>(floor));
+    Sphere sphere2 = Sphere(Vector3(-0.5, 1.25, 2.0), 1.25, Material(0.0, 0.0, 0.0, 1.0, 1.45, Color(0.0, 0.0, 0.0)));
+    scene->addObject(std::make_unique<Sphere>(sphere2));
 }
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, Renderer *renderer, png::image<png::rgba_pixel> *image)
@@ -68,7 +97,7 @@ int main()
 {
     Scene scene;
     Renderer renderer(width, height, sampleCount);
-    Camera camera(Vector3(0.0, 1.5, 13.5), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
+    Camera camera(Vector3(0.0, 5.0, 14.9), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 2);
 
     setupScene(&scene);
 

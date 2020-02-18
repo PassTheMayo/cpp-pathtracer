@@ -35,6 +35,11 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
     Material material = intersect.object->getMaterial();
     Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
+    if (ray->direction.dot(normal) > 0.0)
+    {
+        normal = normal * -1.0;
+    }
+
     if (material.emittance == 1)
     {
         return material.color;
