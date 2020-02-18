@@ -1,6 +1,7 @@
 #pragma once
 
 #include <png++/png.hpp>
+#include "vector.h"
 
 class Color
 {
@@ -11,6 +12,7 @@ public:
 
     Color();
     Color(png::rgb_pixel pixel);
+    Color(Vector3 vector);
     Color(float r, float g, float b);
     Color(double r, double g, double b);
     Color add(Color color);
