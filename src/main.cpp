@@ -17,11 +17,11 @@
 #include "skybox.h"
 #include "util.h"
 
-const int width = 1000;
-const int height = 1000;
+const int width = 1024;
+const int height = 1024;
 const double antialiasJitter = 1.0;
-const int sampleCount = 100000;
-const int maxBounces = 100;
+const int sampleCount = 1000;
+const int maxBounces = 10;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
@@ -29,35 +29,35 @@ void setupScene(Scene *scene)
     Material leftWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 0.0, 0.0));
     Material rightWallMaterial = Material(0, 1, 0, 0, 0, Color(0.0, 255.0, 0.0));
     Material otherWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 255.0, 255.0));
-    Material lightMaterial = Material(0, 0, 1, 0, 0, Color(255.0, 255.0, 255.0));
+    Material lightMaterial = Material(0, 0, 2.5, 0, 0, Color(255.0, 255.0, 255.0));
 
-    Triangle leftWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 0.0, 5.0), Vector3(-5.0, 10.0, 5.0), leftWallMaterial);
-    Triangle leftWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 10.0, -5.0), Vector3(-5.0, 10.0, 5.0), leftWallMaterial);
+    Triangle leftWall1 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 0.0, 5.0), Vector3(-5.1, 10.0, 5.0), leftWallMaterial);
+    Triangle leftWall2 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 10.0, -5.1), Vector3(-5.1, 10.0, 5.0), leftWallMaterial);
     scene->addObject(std::make_unique<Triangle>(leftWall1));
     scene->addObject(std::make_unique<Triangle>(leftWall2));
 
-    Triangle rightWall1 = Triangle(Vector3(5.0, 0.0, -5.0), Vector3(5.0, 0.0, 5.0), Vector3(5.0, 10.0, 5.0), rightWallMaterial);
-    Triangle rightWall2 = Triangle(Vector3(5.0, 0.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(5.0, 10.0, 5.0), rightWallMaterial);
+    Triangle rightWall1 = Triangle(Vector3(5.1, 0.0, -5.1), Vector3(5.1, 0.0, 5.0), Vector3(5.1, 10.0, 5.0), rightWallMaterial);
+    Triangle rightWall2 = Triangle(Vector3(5.1, 0.0, -5.1), Vector3(5.1, 10.0, -5.1), Vector3(5.1, 10.0, 5.0), rightWallMaterial);
     scene->addObject(std::make_unique<Triangle>(rightWall1));
     scene->addObject(std::make_unique<Triangle>(rightWall2));
 
-    Triangle topWall1 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(5.0, 10.0, 5.0), otherWallMaterial);
-    Triangle topWall2 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(-5.0, 10.0, 5.0), Vector3(5.0, 10.0, 5.0), otherWallMaterial);
+    Triangle topWall1 = Triangle(Vector3(-5.1, 10.0, -5.1), Vector3(5.1, 10.0, -5.1), Vector3(5.1, 10.0, 5.0), otherWallMaterial);
+    Triangle topWall2 = Triangle(Vector3(-5.1, 10.0, -5.1), Vector3(-5.1, 10.0, 5.0), Vector3(5.1, 10.0, 5.0), otherWallMaterial);
     scene->addObject(std::make_unique<Triangle>(topWall1));
     scene->addObject(std::make_unique<Triangle>(topWall2));
 
-    Triangle bottomWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), Vector3(5.0, 0.0, 5.0), otherWallMaterial);
-    Triangle bottomWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 0.0, 5.0), Vector3(5.0, 0.0, 5.0), otherWallMaterial);
+    Triangle bottomWall1 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(5.1, 0.0, -5.1), Vector3(5.1, 0.0, 5.0), otherWallMaterial);
+    Triangle bottomWall2 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 0.0, 5.0), Vector3(5.1, 0.0, 5.0), otherWallMaterial);
     scene->addObject(std::make_unique<Triangle>(bottomWall1));
     scene->addObject(std::make_unique<Triangle>(bottomWall2));
 
-    Triangle backWall1 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), otherWallMaterial);
-    Triangle backWall2 = Triangle(Vector3(-5.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), Vector3(5.0, 10.0, -5.0), otherWallMaterial);
+    Triangle backWall1 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 10.0, -5.1), Vector3(5.1, 10.0, -5.1), otherWallMaterial);
+    Triangle backWall2 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(5.1, 0.0, -5.1), Vector3(5.1, 10.0, -5.1), otherWallMaterial);
     scene->addObject(std::make_unique<Triangle>(backWall1));
     scene->addObject(std::make_unique<Triangle>(backWall2));
 
-    Triangle light1 = Triangle(Vector3(-5.0, 9.99, -5.0), Vector3(5.0, 9.99, -5.0), Vector3(5.0, 9.99, 5.0), lightMaterial);
-    Triangle light2 = Triangle(Vector3(-5.0, 9.99, -5.0), Vector3(-5.0, 9.99, 5.0), Vector3(5.0, 9.99, 5.0), lightMaterial);
+    Triangle light1 = Triangle(Vector3(-3.0, 9.99, -3.0), Vector3(3.0, 9.99, -3.0), Vector3(3.0, 9.99, 3.0), lightMaterial);
+    Triangle light2 = Triangle(Vector3(-3.0, 9.99, -3.0), Vector3(-3.0, 9.99, 3.0), Vector3(3, 9.99, 3.0), lightMaterial);
     scene->addObject(std::make_unique<Triangle>(light1));
     scene->addObject(std::make_unique<Triangle>(light2));
 
@@ -83,7 +83,7 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, 
             {
                 Ray ray = camera->getRay((double(x) + randomDouble() * antialiasJitter) / double(renderer->width), (double(y) + randomDouble() * antialiasJitter) / double(renderer->height));
 
-                finalColor = finalColor + renderer->traceRay(&ray, scene, camera, 0).clamp();
+                finalColor = finalColor + renderer->traceRay(&ray, scene, camera, 0);
             }
 
             finalColor = (finalColor / double(renderer->samples)).clamp();
@@ -111,9 +111,14 @@ int main()
 
     for (int i = 0; i < threadCount; i++)
     {
-        int width = double(renderer.width) / threadCount;
+        int width = ceil(double(renderer.width) / threadCount);
 
-        threads.emplace_back(renderRegion, i * width, 0, i * width + width, renderer.height, &camera, &scene, &renderer, &image);
+        int x0 = i * width;
+        int y0 = 0;
+        int x1 = (i + 1) * width;
+        int y1 = renderer.height;
+
+        threads.emplace_back(renderRegion, std::max(x0, 0), std::max(y0, 0), std::min(x1, renderer.width), std::min(y1, renderer.height), &camera, &scene, &renderer, &image);
     }
 
     for (int i = 0; i < threadCount; i++)

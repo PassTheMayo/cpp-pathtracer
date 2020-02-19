@@ -18,9 +18,9 @@ Color::Color(png::rgb_pixel pixel)
 
 Color::Color(Vector3 vector)
 {
-    this->r = ((vector.x + 1) / 2) * 255;
-    this->g = ((vector.y + 1) / 2) * 255;
-    this->b = ((vector.z + 1) / 2) * 255;
+    this->r = vector.x * 255;
+    this->g = vector.y * 255;
+    this->b = vector.z * 255;
 }
 
 Color::Color(float r, float g, float b)
