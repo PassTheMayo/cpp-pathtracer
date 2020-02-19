@@ -7,7 +7,7 @@
 class Texture
 {
 public:
-    png::image<png::rgb_pixel> image;
+    png::image<png::rgb_pixel> *image = nullptr;
     int width;
     int height;
 
