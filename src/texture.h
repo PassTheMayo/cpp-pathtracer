@@ -8,8 +8,8 @@ class Texture
 {
 public:
     png::image<png::rgb_pixel> *image = nullptr;
-    int width;
-    int height;
+    size_t width;
+    size_t height;
 
     Texture();
     Texture(char *file);

@@ -20,13 +20,13 @@
 const int width = 256;
 const int height = 256;
 const double antialiasJitter = 1.0;
-const int sampleCount = 5;
-const int maxBounces = 20;
+const int sampleCount = 1;
+const int maxBounces = 10;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
 {
-    Texture sphereTexture("sphere.png");
+    Texture sphereTexture("output.png");
     Material leftWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 0.0, 0.0), nullptr);
     Material rightWallMaterial = Material(0, 1, 0, 0, 0, Color(0.0, 255.0, 0.0), nullptr);
     Material otherWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 255.0, 255.0), nullptr);
