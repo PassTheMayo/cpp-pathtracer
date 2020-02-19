@@ -17,19 +17,20 @@
 #include "skybox.h"
 #include "util.h"
 
-const int width = 1024;
-const int height = 1024;
+const int width = 256;
+const int height = 256;
 const double antialiasJitter = 1.0;
-const int sampleCount = 1000;
-const int maxBounces = 10;
+const int sampleCount = 5;
+const int maxBounces = 20;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
 {
-    Material leftWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 0.0, 0.0));
-    Material rightWallMaterial = Material(0, 1, 0, 0, 0, Color(0.0, 255.0, 0.0));
-    Material otherWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 255.0, 255.0));
-    Material lightMaterial = Material(0, 0, 2.5, 0, 0, Color(255.0, 255.0, 255.0));
+    Texture sphereTexture("sphere.png");
+    Material leftWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 0.0, 0.0), nullptr);
+    Material rightWallMaterial = Material(0, 1, 0, 0, 0, Color(0.0, 255.0, 0.0), nullptr);
+    Material otherWallMaterial = Material(0, 1, 0, 0, 0, Color(255.0, 255.0, 255.0), nullptr);
+    Material lightMaterial = Material(0, 0, 2.5, 0, 0, Color(255.0, 255.0, 255.0), nullptr);
 
     Triangle leftWall1 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 0.0, 5.0), Vector3(-5.1, 10.0, 5.0), leftWallMaterial);
     Triangle leftWall2 = Triangle(Vector3(-5.1, 0.0, -5.1), Vector3(-5.1, 10.0, -5.1), Vector3(-5.1, 10.0, 5.0), leftWallMaterial);
@@ -61,13 +62,13 @@ void setupScene(Scene *scene)
     scene->addObject(std::make_unique<Triangle>(light1));
     scene->addObject(std::make_unique<Triangle>(light2));
 
-    Sphere sphere1 = Sphere(Vector3(-2, 2.5, -2), 2.5, Material(1.0, 0.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 0.0)));
+    Sphere sphere1 = Sphere(Vector3(-2, 2.5, -2), 2.5, Material(1.0, 0.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 0.0), &sphereTexture));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
-    Sphere sphere3 = Sphere(Vector3(2.25, 1.75, 0.0), 1.75, Material(0.0, 1.0, 0.0, 0.0, 1.45, Color(255.0, 0.0, 0.0)));
+    Sphere sphere3 = Sphere(Vector3(2.25, 1.75, 0.0), 1.75, Material(0.0, 1.0, 0.0, 0.0, 1.45, Color(255.0, 0.0, 0.0), &sphereTexture));
     scene->addObject(std::make_unique<Sphere>(sphere3));
 
-    Sphere sphere2 = Sphere(Vector3(-0.5, 1.25, 2.0), 1.25, Material(0.0, 0.0, 0.0, 1.0, 1.45, Color(0.0, 0.0, 0.0)));
+    Sphere sphere2 = Sphere(Vector3(-0.5, 1.25, 2.0), 1.25, Material(0.0, 0.0, 0.0, 1.0, 1.45, Color(0.0, 0.0, 0.0), &sphereTexture));
     scene->addObject(std::make_unique<Sphere>(sphere2));
 }
 

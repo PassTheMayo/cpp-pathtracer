@@ -1,4 +1,5 @@
 #include <math.h>
+#include <iostream>
 #include "vector.h"
 
 Vector3::Vector3()
@@ -217,4 +218,11 @@ Vector3 Vector3::operator/(float scalar)
 Vector3 Vector3::operator/(double scalar)
 {
     return divide(scalar);
+}
+
+std::ostream &operator<<(std::ostream &os, const Vector3 &v)
+{
+    os << "Vector3(" << v.x << ", " << v.y << ", " << v.z << ")";
+
+    return os;
 }

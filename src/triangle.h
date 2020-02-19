@@ -17,4 +17,5 @@ public:
     double calculateIntersection(Ray *ray);
     Vector3 calculateNormal(Vector3 collisionPoint);
     Material getMaterial();
+    Vector3 calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal);
 };

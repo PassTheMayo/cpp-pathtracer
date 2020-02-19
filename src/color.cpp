@@ -211,3 +211,10 @@ Color Color::operator/(double value)
 {
     return divide(value);
 }
+
+std::ostream &operator<<(std::ostream &os, const Color &c)
+{
+    os << "Color(" << c.r << ", " << c.g << ", " << c.b << ")";
+
+    return os;
+}

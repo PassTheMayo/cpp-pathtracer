@@ -8,9 +8,10 @@ Material::Material()
     this->transmission = 0.0;
     this->ior = 1.0;
     this->color = Color();
+    this->texture = nullptr;
 }
 
-Material::Material(double reflectivity, double diffuse, double emittance, double transmission, double ior, Color color)
+Material::Material(double reflectivity, double diffuse, double emittance, double transmission, double ior, Color color, Texture *texture)
 {
     this->reflectivity = reflectivity;
     this->diffuse = diffuse;
@@ -18,4 +19,5 @@ Material::Material(double reflectivity, double diffuse, double emittance, double
     this->transmission = transmission;
     this->ior = ior;
     this->color = color;
+    this->texture = texture;
 }

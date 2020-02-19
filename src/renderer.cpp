@@ -67,5 +67,12 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
         }
     }
 
-    return material.color * material.emittance + reflectColor * material.reflectivity + material.color * reflectColor * (1 - material.reflectivity) + refractColor * material.transmission;
+    Color materialColor = material.color;
+
+    if (material.texture != nullptr)
+    {
+        materialColor = material.texture->getColorAt(intersect.object->calculateUVCoordinates(intersect.collisionPoint, normal));
+    }
+
+    return materialColor * material.emittance + reflectColor * material.reflectivity + material.color * reflectColor * (1 - material.reflectivity) + refractColor * material.transmission;
 }

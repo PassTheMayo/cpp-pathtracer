@@ -45,4 +45,5 @@ public:
     Vector3 operator/(Vector3 v2);
     Vector3 operator/(float scalar);
     Vector3 operator/(double scalar);
+    friend std::ostream &operator<<(std::ostream &os, const Vector3 &dt);
 };

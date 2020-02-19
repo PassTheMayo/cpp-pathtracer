@@ -60,3 +60,8 @@ Material Triangle::getMaterial()
 {
     return material;
 }
+
+Vector3 Triangle::calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal)
+{
+    return Vector3(0.0, 0.0, 0.0);
+}

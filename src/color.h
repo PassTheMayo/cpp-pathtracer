@@ -50,4 +50,5 @@ public:
     Color operator/(Color color);
     Color operator/(float value);
     Color operator/(double value);
+    friend std::ostream &operator<<(std::ostream &os, const Color &dt);
 };
