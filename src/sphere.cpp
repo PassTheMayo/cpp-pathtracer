@@ -19,10 +19,10 @@ Sphere::Sphere(Vector3 position, double radius, Material material)
 
 Sphere::~Sphere() {}
 
-double Sphere::calculateIntersection(Ray *ray)
+double Sphere::calculateIntersection(Ray ray)
 {
-    Vector3 directionToCenter = position.subtract(ray->origin);
-    double midpointDistance = directionToCenter.dot(ray->direction);
+    Vector3 directionToCenter = position.subtract(ray.origin);
+    double midpointDistance = directionToCenter.dot(ray.direction);
     double discriminant = (radius * radius) - directionToCenter.dot(directionToCenter) + (midpointDistance * midpointDistance);
 
     if (discriminant < 0)

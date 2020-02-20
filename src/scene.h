@@ -15,5 +15,5 @@ public:
     Scene();
     void setSkybox(Skybox *skybox);
     void addObject(std::unique_ptr<Object> object);
-    Intersection castRay(Ray *ray);
+    Intersection castRay(Ray ray);
 };

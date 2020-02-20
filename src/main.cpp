@@ -91,22 +91,22 @@ void cornellScene(Scene *scene)
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, Renderer *renderer, png::image<png::rgba_pixel> *image)
 {
-    for (int x = x0; x < x1; x++)
+    double width = renderer->width;
+    double height = renderer->height;
+    double samples = renderer->samples;
+
+    for (double x = x0; x < x1; x++)
     {
-        for (int y = y0; y < y1; y++)
+        for (double y = y0; y < y1; y++)
         {
-            Color finalColor;
+            Color color;
 
-            for (int s = 0; s < renderer->samples; s++)
+            for (double s = 0; s < samples; s++)
             {
-                Ray ray = camera->getRay((double(x) + randomDouble() * antialiasJitter) / double(renderer->width), (double(y) + randomDouble() * antialiasJitter) / double(renderer->height));
-
-                finalColor = finalColor + renderer->traceRay(&ray, scene, camera, 0);
+                color += renderer->traceRay(camera->getRay((x + (randomDouble() - 0.5) * antialiasJitter * 2) / width, (y + (randomDouble() - 0.5) * antialiasJitter * 2) / height), scene, camera, 0);
             }
 
-            finalColor = (finalColor / double(renderer->samples)).clamp();
-
-            image->set_pixel(x, y, png::rgba_pixel(finalColor.r, finalColor.g, finalColor.b, 255));
+            image->set_pixel(x, y, (color / samples).clamp().toRGBAPixel());
         }
     }
 }

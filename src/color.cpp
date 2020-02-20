@@ -152,6 +152,11 @@ double Color::magnitude()
     return (r + g + b) / (255 * 3);
 }
 
+png::rgba_pixel Color::toRGBAPixel()
+{
+    return png::rgba_pixel(r, g, b, 255);
+}
+
 Color Color::operator+(Color color)
 {
     return add(color);
@@ -217,4 +222,24 @@ std::ostream &operator<<(std::ostream &os, const Color &c)
     os << "Color(" << c.r << ", " << c.g << ", " << c.b << ")";
 
     return os;
+}
+
+Color Color::operator+=(const Color color)
+{
+    return *this;
+}
+
+Color Color::operator-=(const Color color)
+{
+    return *this;
+}
+
+Color Color::operator*=(const Color color)
+{
+    return *this;
+}
+
+Color Color::operator/=(const Color color)
+{
+    return *this;
 }

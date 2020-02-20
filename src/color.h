@@ -38,6 +38,7 @@ public:
     Color clamp();
     Color interpolate(Color c2, double scalar);
     double magnitude();
+    png::rgba_pixel toRGBAPixel();
     Color operator+(Color color);
     Color operator+(float value);
     Color operator+(double value);
@@ -50,5 +51,9 @@ public:
     Color operator/(Color color);
     Color operator/(float value);
     Color operator/(double value);
+    Color Color::operator+=(const Color color);
+    Color Color::operator-=(const Color color);
+    Color Color::operator*=(const Color color);
+    Color Color::operator/=(const Color color);
     friend std::ostream &operator<<(std::ostream &os, const Color &dt);
 };

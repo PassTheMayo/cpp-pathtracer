@@ -14,7 +14,7 @@ void Scene::addObject(std::unique_ptr<Object> object)
     objects.emplace_back(std::move(object));
 }
 
-Intersection Scene::castRay(Ray *ray)
+Intersection Scene::castRay(Ray ray)
 {
     Object *object = nullptr;
     double closestDistance = -1;
@@ -30,5 +30,5 @@ Intersection Scene::castRay(Ray *ray)
         }
     }
 
-    return Intersection(closestDistance > -1, closestDistance, ray->across(closestDistance), object);
+    return Intersection(closestDistance > -1, closestDistance, ray.across(closestDistance), object);
 }
