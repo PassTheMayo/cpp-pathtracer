@@ -31,3 +31,8 @@ Material Plane::getMaterial()
 {
     return material;
 }
+
+Vector3 Plane::calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal)
+{
+    return Vector3(0.0, 0.0, 0.0);
+}

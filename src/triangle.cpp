@@ -1,6 +1,6 @@
+#include <math.h>
+#include "util.h"
 #include "triangle.h"
-
-const double EPSILON = 0.00001;
 
 Triangle::Triangle()
 {
@@ -63,5 +63,20 @@ Material Triangle::getMaterial()
 
 Vector3 Triangle::calculateUVCoordinates(Vector3 collisionPoint, Vector3 normal)
 {
-    return Vector3(0.0, 0.0, 0.0);
+    Vector3 v0 = vertex2 - vertex1;
+    Vector3 v1 = vertex3 - vertex1;
+    Vector3 v2 = collisionPoint - vertex1;
+
+    double d00 = v0.dot(v0);
+    double d01 = v0.dot(v1);
+    double d11 = v1.dot(v1);
+    double d20 = v2.dot(v0);
+    double d21 = v2.dot(v1);
+    double denom = d00 * d11 - d01 * d01;
+
+    double v = (d11 * d20 - d01 * d21) / denom;
+    double w = (d00 * d21 - d01 * d20) / denom;
+    double u = 1.0f - v - w;
+
+    return Vector3(u, w, 0.0);
 }

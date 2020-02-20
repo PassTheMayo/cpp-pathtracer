@@ -7,12 +7,13 @@
 class Texture
 {
 public:
-    png::image<png::rgb_pixel> *image = nullptr;
-    size_t width;
-    size_t height;
+    std::vector<Color> image;
+    int width = 0;
+    int height = 0;
 
     Texture();
-    Texture(char *file);
+    ~Texture();
+    Texture(std::string file, int width, int height);
     Color getColorAt(Vector3 uv);
     Color getColorAt(double u, double v);
 };

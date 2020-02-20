@@ -1,4 +1,5 @@
 #include <iostream>
+#include "util.h"
 #include "material.h"
 #include "ray.h"
 #include "renderer.h"
@@ -49,7 +50,7 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
         rayDirection = rayDirection * -1.0;
     }
 
-    Ray reflectRay = Ray(intersect.collisionPoint + rayDirection * 0.01, rayDirection);
+    Ray reflectRay = Ray(intersect.collisionPoint + rayDirection * EPSILON, rayDirection);
 
     Color reflectColor = traceRay(&reflectRay, scene, camera, depth);
 
@@ -69,9 +70,11 @@ Color Renderer::traceRay(Ray *ray, Scene *scene, Camera *camera, int depth)
 
     Color materialColor = material.color;
 
-    if (material.texture != nullptr)
+    if (material.texture)
     {
-        materialColor = material.texture->getColorAt(intersect.object->calculateUVCoordinates(intersect.collisionPoint, normal));
+        Vector3 uv = intersect.object->calculateUVCoordinates(intersect.collisionPoint, normal);
+
+        materialColor = material.texture->getColorAt(uv);
     }
 
     return materialColor * material.emittance + reflectColor * material.reflectivity + material.color * reflectColor * (1 - material.reflectivity) + refractColor * material.transmission;

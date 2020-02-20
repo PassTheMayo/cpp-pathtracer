@@ -1,8 +1,7 @@
 #include <math.h>
+#include "util.h"
 #include "sphere.h"
 #include "material.h"
-
-const double EPSILON = 0.00001;
 
 Sphere::Sphere()
 {
