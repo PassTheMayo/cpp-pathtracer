@@ -103,7 +103,7 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera *camera, Scene *scene, 
 
             for (double s = 0; s < samples; s++)
             {
-                color += renderer->traceRay(camera->getRay((x + (randomDouble() - 0.5) * antialiasJitter * 2) / width, (y + (randomDouble() - 0.5) * antialiasJitter * 2) / height), scene, camera, 0);
+                color = color + renderer->traceRay(camera->getRay((x + (randomDouble() - 0.5) * antialiasJitter * 2) / width, (y + (randomDouble() - 0.5) * antialiasJitter * 2) / height), scene, camera, 0);
             }
 
             image->set_pixel(x, y, (color / samples).clamp().toRGBAPixel());

@@ -223,23 +223,3 @@ std::ostream &operator<<(std::ostream &os, const Color &c)
 
     return os;
 }
-
-Color Color::operator+=(const Color color)
-{
-    return *this;
-}
-
-Color Color::operator-=(const Color color)
-{
-    return *this;
-}
-
-Color Color::operator*=(const Color color)
-{
-    return *this;
-}
-
-Color Color::operator/=(const Color color)
-{
-    return *this;
-}
