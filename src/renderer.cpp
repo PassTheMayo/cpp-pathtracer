@@ -42,15 +42,16 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera *camera, int depth)
     }
 
     Vector3 reflectDirection = (ray.direction - normal * ray.direction.dot(normal) * 2.0).normalize();
-    Vector3 randomDirection = Vector3(randomDouble() - 0.5, randomDouble() - 0.5, randomDouble() - 0.5).normalize();
-    Vector3 rayDirection = reflectDirection.interpolate(randomDirection, material.diffuse).normalize();
+    Vector3 diffuseDirection = randomDirection();
 
-    if (normal.dot(rayDirection) < 0)
+    if (normal.dot(diffuseDirection) < 0)
     {
-        rayDirection = rayDirection * -1.0;
+        diffuseDirection = diffuseDirection * -1.0;
     }
 
-    Color reflectColor = traceRay(Ray(intersect.collisionPoint + rayDirection * EPSILON, rayDirection), scene, camera, depth);
+    Color reflectColor = traceRay(Ray(intersect.collisionPoint + reflectDirection * EPSILON, reflectDirection), scene, camera, depth);
+    Color diffuseColor = traceRay(Ray(intersect.collisionPoint + diffuseDirection * EPSILON, diffuseDirection), scene, camera, depth);
+    Color bounceColor = reflectColor.interpolate(diffuseColor, material.diffuse);
 
     Color refractColor;
 
@@ -73,5 +74,5 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera *camera, int depth)
         materialColor = material.texture->getColorAt(uv);
     }
 
-    return materialColor * material.emittance + reflectColor * material.reflectivity + material.color * reflectColor * (1 - material.reflectivity) + refractColor * material.transmission;
+    return materialColor * material.emittance + bounceColor * material.reflectivity + material.color * bounceColor * (1 - material.reflectivity) + refractColor * material.transmission;
 }

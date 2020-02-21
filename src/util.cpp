@@ -46,3 +46,8 @@ double randomDouble()
 {
     return dist(eng);
 }
+
+Vector3 randomDirection()
+{
+    return Vector3(randomDouble() - 0.5, randomDouble() - 0.5, randomDouble() - 0.5).normalize();
+}
