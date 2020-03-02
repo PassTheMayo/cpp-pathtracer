@@ -49,7 +49,7 @@ double Sphere::calculateIntersection(Ray ray)
 
 Vector3 Sphere::calculateNormal(Vector3 intersectionPoint)
 {
-    return intersectionPoint.subtract(position);
+    return (intersectionPoint - position).normalize();
 }
 
 Material Sphere::getMaterial()

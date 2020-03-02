@@ -13,5 +13,5 @@ public:
     int samples;
 
     Renderer(int width, int height, int samples);
-    Color traceRay(Ray ray, Scene *scene, Camera *camera, int depth);
+    Color traceRay(Ray ray, Scene *scene, Camera camera, int depth);
 };

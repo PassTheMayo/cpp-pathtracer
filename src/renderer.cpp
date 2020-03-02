@@ -12,11 +12,9 @@ Renderer::Renderer(int width, int height, int samples)
     this->samples = samples;
 }
 
-Color Renderer::traceRay(Ray ray, Scene *scene, Camera *camera, int depth)
+Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
 {
-    depth++;
-
-    if (depth >= camera->maxBounces)
+    if (depth >= camera.maxBounces)
     {
         return Color(0.0, 0.0, 0.0);
     }
@@ -34,26 +32,16 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera *camera, int depth)
     }
 
     Material material = intersect.object->getMaterial();
+
+    if (material.emittance > 0.0)
+    {
+        return material.color * material.emittance;
+    }
+
     Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
-    if (ray.direction.dot(normal) > 0.0)
-    {
-        normal = normal * -1.0;
-    }
-
-    Vector3 reflectDirection = (ray.direction - normal * ray.direction.dot(normal) * 2.0).normalize();
-    Vector3 diffuseDirection = randomDirection();
-
-    if (normal.dot(diffuseDirection) < 0)
-    {
-        diffuseDirection = diffuseDirection * -1.0;
-    }
-
-    Color reflectColor = traceRay(Ray(intersect.collisionPoint + reflectDirection * EPSILON, reflectDirection), scene, camera, depth);
-    Color diffuseColor = traceRay(Ray(intersect.collisionPoint + diffuseDirection * EPSILON, diffuseDirection), scene, camera, depth);
-    Color bounceColor = reflectColor.interpolate(diffuseColor, material.diffuse);
-
     Color refractColor;
+    Color bounceColor;
 
     if (material.transmission > 0.0)
     {
@@ -61,18 +49,27 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera *camera, int depth)
 
         if (ray.refract(normal, material.ior, &refractDirection))
         {
-            refractColor = traceRay(Ray(intersect.collisionPoint + refractDirection * 0.01, refractDirection), scene, camera, depth);
+            refractColor = traceRay(Ray(intersect.collisionPoint + refractDirection * EPSILON, refractDirection), scene, camera, depth + 1);
         }
     }
 
-    Color materialColor = material.color;
+    if (material.transmission < 1)
+    {
+        Vector3 reflectDirection = ray.reflect(normal);
+        Vector3 diffuseDirection = randomDirection();
+        Vector3 bounceDirection = reflectDirection.interpolate(diffuseDirection, material.diffuse);
+
+        bounceColor = traceRay(Ray(intersect.collisionPoint + bounceDirection * EPSILON, bounceDirection), scene, camera, depth + 1);
+    }
+
+    Color objectColor = material.color;
 
     if (material.texture)
     {
         Vector3 uv = intersect.object->calculateUVCoordinates(intersect.collisionPoint, normal);
 
-        materialColor = material.texture->getColorAt(uv);
+        objectColor = material.texture->getColorAt(uv);
     }
 
-    return materialColor * material.emittance + bounceColor * material.reflectivity + material.color * bounceColor * (1 - material.reflectivity) + refractColor * material.transmission;
+    return objectColor * bounceColor.interpolate(refractColor, material.transmission);
 }

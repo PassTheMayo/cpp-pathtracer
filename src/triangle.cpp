@@ -53,7 +53,7 @@ double Triangle::calculateIntersection(Ray ray)
 
 Vector3 Triangle::calculateNormal(Vector3 collisionPoint)
 {
-    return vertex2.subtract(vertex1).cross(vertex3 - vertex1);
+    return (vertex2 - vertex1).cross(vertex3 - vertex1).normalize();
 }
 
 Material Triangle::getMaterial()
