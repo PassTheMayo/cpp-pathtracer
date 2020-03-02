@@ -6,8 +6,8 @@
 class Material
 {
 public:
-    double reflectivity;
-    double diffuse;
+    double metallic;
+    double roughness;
     double emittance;
     double transmission;
     double ior;
@@ -15,5 +15,5 @@ public:
     Texture *texture = nullptr;
 
     Material();
-    Material(double reflectivity, double diffuse, double emittance, double transmission, double ior, Color color, Texture *texture);
+    Material(double metallic, double roughness, double emittance, double transmission, double ior, Color color, Texture *texture);
 };

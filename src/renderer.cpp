@@ -55,9 +55,14 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
 
     if (material.transmission < 1)
     {
-        Vector3 reflectDirection = ray.reflect(normal);
         Vector3 diffuseDirection = randomDirection();
-        Vector3 bounceDirection = reflectDirection.interpolate(diffuseDirection, material.diffuse);
+
+        if (normal.dot(diffuseDirection) < 0.0)
+        {
+            diffuseDirection = diffuseDirection * -1.0;
+        }
+
+        Vector3 bounceDirection = ray.reflect(normal).interpolate(diffuseDirection, material.roughness);
 
         bounceColor = traceRay(Ray(intersect.collisionPoint + bounceDirection * EPSILON, bounceDirection), scene, camera, depth + 1);
     }

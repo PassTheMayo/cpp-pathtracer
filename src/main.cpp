@@ -20,8 +20,8 @@
 const int renderWidth = 1920;
 const int renderHeight = 1080;
 const double antialiasJitter = 0.75;
-const int sampleCount = 100;
-const int maxBounces = 100;
+const int sampleCount = 1000;
+const int maxBounces = 10;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
@@ -29,16 +29,16 @@ void setupScene(Scene *scene)
     Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
     scene->addObject(std::make_unique<Plane>(floor));
 
-    Sphere light = Sphere(Vector3(0.0, 30.0, 0.0), 20.0, Material(0.0, 0.0, 1.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
+    Sphere light = Sphere(Vector3(0.0, 20.0, 0.0), 10.0, Material(0.0, 0.0, 2.5, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
     scene->addObject(std::make_unique<Sphere>(light));
 
-    Sphere sphere1 = Sphere(Vector3(-2.0, 1.0, 0.0), 1.0, Material(1.0, 0.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
+    Sphere sphere1 = Sphere(Vector3(-2.0, 1.0, 0.0), 1.0, Material(0.0, 0.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
     scene->addObject(std::make_unique<Sphere>(sphere1));
 
     Sphere sphere2 = Sphere(Vector3(0.0, 1.0, 0.0), 1.0, Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 0.0, 0.0), nullptr));
     scene->addObject(std::make_unique<Sphere>(sphere2));
 
-    Sphere sphere3 = Sphere(Vector3(2.0, 1.0, 0.0), 1.0, Material(1.0, 0.5, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
+    Sphere sphere3 = Sphere(Vector3(2.0, 1.0, 0.0), 1.0, Material(1.0, 0.75, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr));
     scene->addObject(std::make_unique<Sphere>(sphere3));
 }
 
