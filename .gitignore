@@ -5,3 +5,4 @@ core
 gmon.out
 profile.txt
 *.png
+*.obj

@@ -23,21 +23,23 @@ double Sphere::calculateIntersection(Ray ray)
 {
     Vector3 directionToCenter = position.subtract(ray.origin);
     double midpointDistance = directionToCenter.dot(ray.direction);
-    double discriminant = (radius * radius) - directionToCenter.dot(directionToCenter) + (midpointDistance * midpointDistance);
+    double discriminant = radius * radius - directionToCenter.dot(directionToCenter) + midpointDistance * midpointDistance;
 
     if (discriminant < 0)
     {
         return -1;
     }
 
-    double dist = midpointDistance - sqrt(discriminant);
+    double sqrtDiscriminant = sqrt(discriminant);
+
+    double dist = midpointDistance - sqrtDiscriminant;
 
     if (dist > EPSILON)
     {
         return dist;
     }
 
-    double dist2 = midpointDistance + sqrt(discriminant);
+    double dist2 = midpointDistance + sqrtDiscriminant;
 
     if (dist2 > EPSILON)
     {

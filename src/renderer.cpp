@@ -40,6 +40,11 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
 
     Vector3 normal = intersect.object->calculateNormal(intersect.collisionPoint);
 
+    if (normal.dot(ray.direction) > 0.0)
+    {
+        normal = normal * -1.0;
+    }
+
     Color refractColor;
     Color bounceColor;
 
