@@ -17,10 +17,10 @@
 #include "skybox.h"
 #include "util.h"
 
-const int renderWidth = 1000;
-const int renderHeight = 1000;
+const int renderWidth = 500;
+const int renderHeight = 500;
 const double antialiasJitter = 0.75;
-const int sampleCount = 1000;
+const int sampleCount = 10;
 const int maxBounces = 5;
 const double threadCount = std::thread::hardware_concurrency();
 
@@ -29,7 +29,7 @@ void setupScene(Scene *scene)
     Material otherMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr);
     Material leftMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 0.0, 0.0), nullptr);
     Material rightMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 255.0), nullptr);
-    Material lightMaterial(0.0, 0.0, 1.5, 0.0, 1.0, Color(255.0, 230.0, 210.0), nullptr);
+    Material lightMaterial(0.0, 0.0, 3.0, 0.0, 1.0, Color(255.0, 230.0, 210.0), nullptr);
 
     Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), otherMaterial);
     scene->addObject(std::make_unique<Plane>(floor));
@@ -60,6 +60,8 @@ void setupScene(Scene *scene)
 
     Plane frontWall = Plane(Vector3(0.0, 0.0, -10.0), Vector3(0.0, 0.0, 1.0), otherMaterial);
     scene->addObject(std::make_unique<Plane>(frontWall));
+
+    loadObjectFile("teapot.obj", scene, Material(0.0, 0.0, 0.0, 1.0, 1.45, Color(255.0, 255.0, 255.0), nullptr), Vector3(0.0, 1.95, -7.0), Vector3(0.04, 0.04, 0.04));
 }
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera camera, Scene *scene, Renderer renderer, png::image<png::rgba_pixel> *image)

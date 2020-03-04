@@ -69,11 +69,6 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
     {
         line = std::regex_replace(std::regex_replace(line, std::regex(" +"), " "), std::regex("^ *| *$"), "");
 
-        for (unsigned int i = 0; i < strlen(line.c_str()); i++)
-            std::cout << std::hex << (int)line[i];
-
-        std::cout << std::endl;
-
         if (line.rfind("#", 0) == 0)
         {
             continue;
@@ -97,7 +92,7 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
 
         if (line.rfind("f ", 0) == 0)
         {
-            if (std::regex_match(line, std::regex(R"(f( \d+){3})", std::regex_constants::extended)))
+            if (std::regex_match(line, std::regex(R"(f( [0-9]+){3})", std::regex_constants::extended)))
             {
                 int i0, i1, i2;
 
@@ -134,7 +129,7 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
 
                 faceCount++;
             }
-            else if (std::regex_match(line, std::regex(R"(f( \d+\/\d+\/\d+){3})", std::regex_constants::extended)))
+            else if (std::regex_match(line, std::regex(R"(f( [0-9]+\/[0-9]+\/[0-9]+){3})", std::regex_constants::extended)))
             {
                 int v0, v1, v2, vn0, vn1, vn2, vt0, vt1, vt2;
 
@@ -171,7 +166,7 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
 
                 faceCount++;
             }
-            else if (std::regex_match(line, std::regex(R"(f( \d+\/\/\d+){3})", std::regex_constants::extended)))
+            else if (std::regex_match(line, std::regex(R"(f( [0-9]+\/\/[0-9]+){3})", std::regex_constants::extended)))
             {
                 int v0, v1, v2, vt0, vt1, vt2;
 
@@ -210,7 +205,7 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
             }
             else
             {
-                // std::cerr << "Face does not match known format: " << line << std::endl;
+                std::cerr << "Face does not match known format: " << line << std::endl;
             }
         }
     }
