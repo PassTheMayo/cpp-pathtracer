@@ -11,7 +11,8 @@ public:
     int width;
     int height;
     int samples;
+    int mode;
 
-    Renderer(int width, int height, int samples);
+    Renderer(int width, int height, int samples, int mode);
     Color traceRay(Ray ray, Scene *scene, Camera camera, int depth);
 };

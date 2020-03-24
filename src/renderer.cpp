@@ -5,11 +5,12 @@
 #include "renderer.h"
 #include "util.h"
 
-Renderer::Renderer(int width, int height, int samples)
+Renderer::Renderer(int width, int height, int samples, int mode)
 {
     this->width = width;
     this->height = height;
     this->samples = samples;
+    this->mode = mode;
 }
 
 Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
@@ -31,6 +32,11 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
         return Color(0.0, 0.0, 0.0);
     }
 
+    if (mode == 2)
+    {
+        return Color(255.0, 255.0, 255.0) * (1.0 / camera.position.distance(intersect.collisionPoint));
+    }
+
     Material material = intersect.object->getMaterial();
 
     if (material.emittance > 0.0)
@@ -43,6 +49,11 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
     if (normal.dot(ray.direction) > 0.0)
     {
         normal = normal * -1.0;
+    }
+
+    if (mode == 1)
+    {
+        return normal;
     }
 
     Color refractColor;

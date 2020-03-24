@@ -102,6 +102,26 @@ Vector3 Vector3::divide(double scalar)
     return Vector3(x / scalar, y / scalar, z / scalar);
 }
 
+Vector3 Vector3::modulo(Vector3 v2)
+{
+    return Vector3(fmod(x, v2.x), fmod(y, v2.y), fmod(z, v2.z));
+}
+
+Vector3 Vector3::modulo(float scalar)
+{
+    return Vector3(fmod(x, scalar), fmod(y, scalar), fmod(y, scalar));
+}
+
+Vector3 Vector3::modulo(double scalar)
+{
+    return Vector3(fmod(x, scalar), fmod(y, scalar), fmod(y, scalar));
+}
+
+Vector3 Vector3::absolute()
+{
+    return Vector3(abs(x), abs(y), abs(z));
+}
+
 double Vector3::magnitude()
 {
     return sqrt(x * x + y * y + z * z);
@@ -218,6 +238,21 @@ Vector3 Vector3::operator/(float scalar)
 Vector3 Vector3::operator/(double scalar)
 {
     return divide(scalar);
+}
+
+Vector3 Vector3::operator%(Vector3 v2)
+{
+    return modulo(v2);
+}
+
+Vector3 Vector3::operator%(float scalar)
+{
+    return modulo(scalar);
+}
+
+Vector3 Vector3::operator%(double scalar)
+{
+    return modulo(scalar);
 }
 
 std::ostream &operator<<(std::ostream &os, const Vector3 &v)

@@ -17,10 +17,10 @@
 #include "skybox.h"
 #include "util.h"
 
-const int renderWidth = 500;
-const int renderHeight = 500;
-const double antialiasJitter = 0.75;
-const int sampleCount = 10;
+const int renderWidth = 1000;
+const int renderHeight = 1000;
+const double antialiasJitter = 0.0;
+const int sampleCount = 1;
 const int maxBounces = 5;
 const double threadCount = std::thread::hardware_concurrency();
 
@@ -61,7 +61,7 @@ void setupScene(Scene *scene)
     Plane frontWall = Plane(Vector3(0.0, 0.0, -10.0), Vector3(0.0, 0.0, 1.0), otherMaterial);
     scene->addObject(std::make_unique<Plane>(frontWall));
 
-    loadObjectFile("teapot.obj", scene, Material(0.0, 0.0, 0.0, 1.0, 1.45, Color(255.0, 255.0, 255.0), nullptr), Vector3(0.0, 1.95, -7.0), Vector3(0.04, 0.04, 0.04));
+    loadObjectFile("assets/teapot.obj", scene, Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr), Vector3(0.0, 1.95, -7.0), Vector3(0.04, 0.04, 0.04));
 }
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera camera, Scene *scene, Renderer renderer, png::image<png::rgba_pixel> *image)
@@ -89,7 +89,7 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera camera, Scene *scene, R
 int main()
 {
     Scene scene;
-    Renderer renderer(renderWidth, renderHeight, sampleCount);
+    Renderer renderer(renderWidth, renderHeight, sampleCount, 0);
     Camera camera(Vector3(0.0, 5.0, 12.5), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 1);
 
     setupScene(&scene);

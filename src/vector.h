@@ -25,6 +25,10 @@ public:
     Vector3 divide(Vector3 v2);
     Vector3 divide(float scalar);
     Vector3 divide(double scalar);
+    Vector3 modulo(Vector3 v2);
+    Vector3 modulo(float scalar);
+    Vector3 modulo(double scalar);
+    Vector3 absolute();
     double magnitude();
     double distance(Vector3 v2);
     double dot(Vector3 v2);
@@ -45,5 +49,8 @@ public:
     Vector3 operator/(Vector3 v2);
     Vector3 operator/(float scalar);
     Vector3 operator/(double scalar);
+    Vector3 operator%(Vector3 v2);
+    Vector3 operator%(float scalar);
+    Vector3 operator%(double scalar);
     friend std::ostream &operator<<(std::ostream &os, const Vector3 &dt);
 };
