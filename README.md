@@ -17,6 +17,10 @@ The binary file `main` now resides in the `bin/` folder.
 
 ## Renders
 
+![04-30-2020 12-19-00 PM.png](https://raw.githubusercontent.com/PassTheMayo/cpp-pathtracer/master/results/04-30-2020%2012-19-00%20PM.png)
+
+![04-29-2020 4-07-00 PM.png](https://raw.githubusercontent.com/PassTheMayo/cpp-pathtracer/master/results/04-29-2020%204-07-00%20PM.png)
+
 ![03-04-2020 4-20-00 PM.png](https://raw.githubusercontent.com/PassTheMayo/cpp-pathtracer/master/results/03-04-2020%204-20-00%20PM.png)
 
 ![02-18-2020 3-31-00 PM.png](https://raw.githubusercontent.com/PassTheMayo/cpp-pathtracer/master/results/02-18-2020%203-31-00%20PM.png)
