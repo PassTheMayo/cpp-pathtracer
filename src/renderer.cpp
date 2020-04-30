@@ -5,12 +5,13 @@
 #include "renderer.h"
 #include "util.h"
 
-Renderer::Renderer(int width, int height, int samples, int mode)
+Renderer::Renderer(int width, int height, int samples, int mode, double lightFalloff)
 {
     this->width = width;
     this->height = height;
     this->samples = samples;
     this->mode = mode;
+    this->lightFalloff = lightFalloff;
 }
 
 Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
@@ -58,6 +59,7 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
 
     Color refractColor;
     Color bounceColor;
+    Color specularColor;
 
     if (material.transmission > 0.0)
     {
@@ -69,7 +71,7 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
         }
     }
 
-    if (material.transmission < 1)
+    if (material.transmission < 1 || material.specularity > 0.0)
     {
         Vector3 diffuseDirection = randomDirection();
 
@@ -80,7 +82,20 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
 
         Vector3 bounceDirection = ray.reflect(normal).interpolate(diffuseDirection, material.roughness);
 
-        bounceColor = traceRay(Ray(intersect.collisionPoint + bounceDirection * EPSILON, bounceDirection), scene, camera, depth + 1);
+        if (material.transmission < 1.0)
+        {
+            bounceColor = traceRay(Ray(intersect.collisionPoint + bounceDirection * EPSILON, bounceDirection), scene, camera, depth + 1);
+        }
+
+        if (material.specularity > 0.0)
+        {
+            Intersection specularHit = scene->castRay(Ray(intersect.collisionPoint + bounceDirection * EPSILON, bounceDirection));
+
+            if (specularHit.hit)
+            {
+                specularColor = Color(specularHit.object->getMaterial().emittance);
+            }
+        }
     }
 
     Color objectColor = material.color;
@@ -92,5 +107,12 @@ Color Renderer::traceRay(Ray ray, Scene *scene, Camera camera, int depth)
         objectColor = material.texture->getColorAt(uv);
     }
 
-    return objectColor * bounceColor.interpolate(refractColor, material.transmission);
+    double falloff = 1.0;
+
+    if (depth != 0)
+    {
+        falloff = 1.0 - lightFalloff;
+    }
+
+    return (objectColor * bounceColor.interpolate(refractColor, material.transmission) + specularColor) * falloff;
 }

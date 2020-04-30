@@ -37,6 +37,13 @@ Color::Color(double r, double g, double b)
     this->b = b;
 }
 
+Color::Color(double v)
+{
+    this->r = v * 255.0;
+    this->g = v * 255.0;
+    this->b = v * 255.0;
+}
+
 Color Color::add(Color color)
 {
     return Color(r + color.r, g + color.g, b + color.b);

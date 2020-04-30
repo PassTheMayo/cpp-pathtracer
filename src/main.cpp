@@ -17,51 +17,43 @@
 #include "skybox.h"
 #include "util.h"
 
-const int renderWidth = 1000;
-const int renderHeight = 1000;
+const int renderWidth = 500;
+const int renderHeight = 500;
 const double antialiasJitter = 0.0;
-const int sampleCount = 1;
+const int sampleCount = 10;
 const int maxBounces = 5;
 const double threadCount = std::thread::hardware_concurrency();
 
 void setupScene(Scene *scene)
 {
-    Material otherMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr);
-    Material leftMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 0.0, 0.0), nullptr);
-    Material rightMaterial(0.0, 1.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 255.0), nullptr);
-    Material lightMaterial(0.0, 0.0, 3.0, 0.0, 1.0, Color(255.0, 230.0, 210.0), nullptr);
+    Material floorMaterial(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr);
+    Material lightMaterial(0.0, 0.0, 0.0, 2.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr);
+    Material frontLeftCubeMaterial(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Color(0.0, 0.0, 255.0), nullptr);
+    Material frontRightCubeMaterial(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 0.0), nullptr);
+    Material backLeftCubeMaterial(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Color(255.0, 0.0, 0.0), nullptr);
+    Material backRightCubeMaterial(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Color(0.0, 255.0, 0.0), nullptr);
+    Material middleCubeMaterial(0.0, 0.0, 0.0, 0.0, 1.0, 1.325, Color(255.0, 255.0, 255.0), nullptr);
 
-    Plane floor = Plane(Vector3(0.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0), otherMaterial);
-    scene->addObject(std::make_unique<Plane>(floor));
+    // Floor
+    createCube(scene, Vector3(-5.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), Vector3(-5.0, 0.0, 5.0), Vector3(5.0, 0.0, 5.0), Vector3(-5.0, -100.0, -5.0), Vector3(5.0, -100.0, -5.0), Vector3(-5.0, -100.0, 5.0), Vector3(5.0, -100.0, 5.0), floorMaterial);
 
-    Plane leftWall = Plane(Vector3(-5.0, 0.0, 0.0), Vector3(1.0, 0.0, 0.0), leftMaterial);
-    scene->addObject(std::make_unique<Plane>(leftWall));
+    // Light
+    createCube(scene, Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(-5.0, 10.0, 5.0), Vector3(5.0, 10.0, 5.0), Vector3(-5.0, 20.0, -5.0), Vector3(5.0, 20.0, -5.0), Vector3(-5.0, 20.0, 5.0), Vector3(5.0, 20.0, 5.0), lightMaterial);
 
-    Plane rightWall = Plane(Vector3(5.0, 0.0, 0.0), Vector3(-1.0, 0.0, 0.0), rightMaterial);
-    scene->addObject(std::make_unique<Plane>(rightWall));
+    // Front Left Cube
+    createCube(scene, Vector3(-5.0, 2.0, 3.0), Vector3(-3.0, 2.0, 3.0), Vector3(-5.0, 2.0, 5.0), Vector3(-3.0, 2.0, 5.0), Vector3(-5.0, 0.0, 3.0), Vector3(-3.0, 0.0, 3.0), Vector3(-5.0, 0.0, 5.0), Vector3(-3.0, 0.0, 5.0), frontLeftCubeMaterial);
 
-    Triangle topWall1 = Triangle(Vector3(-5.1, 10.0, -5.0), Vector3(5.1, 10.0, -5.0), Vector3(5.1, 10.0, 20.1), otherMaterial);
-    scene->addObject(std::make_unique<Triangle>(topWall1));
+    // Front Right Cube
+    createCube(scene, Vector3(3.0, 2.0, 3.0), Vector3(5.0, 2.0, 3.0), Vector3(3.0, 2.0, 5.0), Vector3(5.0, 2.0, 5.0), Vector3(3.0, 0.0, 3.0), Vector3(5.0, 0.0, 3.0), Vector3(3.0, 0.0, 5.0), Vector3(5.0, 0.0, 5.0), frontRightCubeMaterial);
 
-    Triangle topWall2 = Triangle(Vector3(-5.1, 10.0, -5.0), Vector3(-5.1, 10.0, 20.1), Vector3(5.1, 10.0, 20.1), otherMaterial);
-    scene->addObject(std::make_unique<Triangle>(topWall2));
+    // Back Left Cube
+    createCube(scene, Vector3(-5.0, 2.0, -3.0), Vector3(-3.0, 2.0, -3.0), Vector3(-5.0, 2.0, -5.0), Vector3(-3.0, 2.0, -5.0), Vector3(-5.0, 0.0, -3.0), Vector3(-3.0, 0.0, -3.0), Vector3(-5.0, 0.0, -5.0), Vector3(-3.0, 0.0, -5.0), backLeftCubeMaterial);
 
-    Triangle topWallBack1 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(5.0, 10.0, -5.0), Vector3(5.0, 15.0, -5.0), otherMaterial);
-    scene->addObject(std::make_unique<Triangle>(topWallBack1));
+    // Back Right Cube
+    createCube(scene, Vector3(3.0, 2.0, -3.0), Vector3(5.0, 2.0, -3.0), Vector3(3.0, 2.0, -5.0), Vector3(5.0, 2.0, -5.0), Vector3(3.0, 0.0, -3.0), Vector3(5.0, 0.0, -3.0), Vector3(3.0, 0.0, -5.0), Vector3(5.0, 0.0, -5.0), backRightCubeMaterial);
 
-    Triangle topWallBack2 = Triangle(Vector3(-5.0, 10.0, -5.0), Vector3(-5.0, 15.0, -5.0), Vector3(5.0, 15.0, -5.0), otherMaterial);
-    scene->addObject(std::make_unique<Triangle>(topWallBack2));
-
-    Plane light = Plane(Vector3(0.0, 15.0, 0.0), Vector3(0.0, -1.0, 0.0), lightMaterial);
-    scene->addObject(std::make_unique<Plane>(light));
-
-    Plane backWall = Plane(Vector3(0.0, 0.0, 20.0), Vector3(0.0, 0.0, -1.0), otherMaterial);
-    scene->addObject(std::make_unique<Plane>(backWall));
-
-    Plane frontWall = Plane(Vector3(0.0, 0.0, -10.0), Vector3(0.0, 0.0, 1.0), otherMaterial);
-    scene->addObject(std::make_unique<Plane>(frontWall));
-
-    loadObjectFile("assets/teapot.obj", scene, Material(0.0, 1.0, 0.0, 0.0, 1.0, Color(255.0, 255.0, 255.0), nullptr), Vector3(0.0, 1.95, -7.0), Vector3(0.04, 0.04, 0.04));
+    // Middle Cube
+    createCube(scene, Vector3(-1.0, 3.0, -1.0), Vector3(1.0, 3.0, -1.0), Vector3(-1.0, 3.0, 1.0), Vector3(1.0, 3.0, 1.0), Vector3(-1.0, 1.0, -1.0), Vector3(1.0, 1.0, -1.0), Vector3(-1.0, 1.0, 1.0), Vector3(1.0, 1.0, 1.0), middleCubeMaterial);
 }
 
 void renderRegion(int x0, int y0, int x1, int y1, Camera camera, Scene *scene, Renderer renderer, png::image<png::rgba_pixel> *image)
@@ -89,8 +81,11 @@ void renderRegion(int x0, int y0, int x1, int y1, Camera camera, Scene *scene, R
 int main()
 {
     Scene scene;
-    Renderer renderer(renderWidth, renderHeight, sampleCount, 0);
-    Camera camera(Vector3(0.0, 5.0, 12.5), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 180.0, maxBounces + 1);
+    Renderer renderer(renderWidth, renderHeight, sampleCount, 0, 0.0);
+    Camera camera(Vector3(0.0, 5.0, 35.0), Rotation(M_PI, 0.0, 0.0), double(renderer.height) / double(renderer.width), 90.0, maxBounces + 1);
+
+    Skybox skybox(Color(38.0, 77.0, 153.0), Color(19.0, 39.0, 77.0), Color(0.0, 0.0, 0.0), 1.0);
+    scene.setSkybox(&skybox);
 
     setupScene(&scene);
 

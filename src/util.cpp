@@ -212,3 +212,47 @@ void loadObjectFile(std::string filename, Scene *scene, Material material, Vecto
 
     std::cout << "Successfully imported OBJ with " << faceCount << " faces and " << vertexCount << " vertices" << std::endl;
 }
+
+double interpolate(double a, double b, double s)
+{
+    return a + (b - a) * s;
+}
+
+void createCube(Scene *scene, Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 e, Vector3 f, Vector3 g, Vector3 h, Material material)
+{
+    Triangle triangle1 = Triangle(a, b, d, material);
+    scene->addObject(std::make_unique<Triangle>(triangle1)); // Top
+
+    Triangle triangle2 = Triangle(a, c, d, material);
+    scene->addObject(std::make_unique<Triangle>(triangle2)); // Top
+
+    Triangle triangle3 = Triangle(e, f, h, material);
+    scene->addObject(std::make_unique<Triangle>(triangle3)); // Bottom
+
+    Triangle triangle4 = Triangle(e, g, h, material);
+    scene->addObject(std::make_unique<Triangle>(triangle4)); // Bottom
+
+    Triangle triangle5 = Triangle(c, d, h, material);
+    scene->addObject(std::make_unique<Triangle>(triangle5)); // Side 1
+
+    Triangle triangle6 = Triangle(c, g, h, material);
+    scene->addObject(std::make_unique<Triangle>(triangle6)); // Side 1
+
+    Triangle triangle7 = Triangle(a, b, f, material);
+    scene->addObject(std::make_unique<Triangle>(triangle7)); // Side 2
+
+    Triangle triangle8 = Triangle(a, e, f, material);
+    scene->addObject(std::make_unique<Triangle>(triangle8)); // Side 2
+
+    Triangle triangle9 = Triangle(d, b, f, material);
+    scene->addObject(std::make_unique<Triangle>(triangle9)); // Side 3
+
+    Triangle triangle10 = Triangle(d, h, f, material);
+    scene->addObject(std::make_unique<Triangle>(triangle10)); // Side 3
+
+    Triangle triangle11 = Triangle(a, e, g, material);
+    scene->addObject(std::make_unique<Triangle>(triangle11)); // Side 4
+
+    Triangle triangle12 = Triangle(a, c, g, material);
+    scene->addObject(std::make_unique<Triangle>(triangle12)); // Side 4
+}

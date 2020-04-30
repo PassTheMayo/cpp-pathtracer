@@ -15,6 +15,7 @@ public:
     Color(Vector3 vector);
     Color(float r, float g, float b);
     Color(double r, double g, double b);
+    Color(double v);
     Color add(Color color);
     Color add(float value);
     Color add(double value);
